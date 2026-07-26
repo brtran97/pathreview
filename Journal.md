@@ -48,9 +48,6 @@ FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_assumption_vs_ob
 ========================= 9 failed, 23 passed in 0.18s =========================
 ```
 
-**PLAN.md link:** [to fill in later this week]
-
-**Walkthrough video (recommended):** [optional — to fill in if recorded]
+**PLAN.md link:** https://github.com/brtran97/pathreview/commit/2b00be758a03d6e6a935ee9016aeaa33734eeb6f
 
 **Blockers or open questions:**
-[to fill in]
