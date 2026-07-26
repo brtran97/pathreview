@@ -19,3 +19,38 @@ In the safety section folder of the project the file **bias_detector.py** uses r
 **Setup confirmation:** [x] App runs locally at localhost:5173
 
 **Cohort ledger:** [x] Issue added to cohort ledger
+
+## Week 8 — Reproduction & solution planning
+
+**Reproduction commit link:** [to fill in after committing this note]
+
+**Reproduction summary:**
+I reproduced the issue by running the bias detector unit tests in my local
+environment with `.venv/bin/python -m pytest tests/unit/test_bias_detector.py -v`
+(equivalent to `make test-unit` scoped to this file) or with vscodes pytest GUI. I observed **9 failed, 23
+passed**, exactly matching the counts described in issue #151. The failures confirm
+that `BiasDetector.detect_bias(...)` returns `(False, '')` for natural phrasings that
+should be flagged (e.g. dismissive bootcamp language and age-based assumptions),
+because the regex patterns in `safety/bias_detector.py` are too narrow.
+
+The 9 failing tests:
+
+```
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_dismissive_bootcamp_language_detected
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_bootcamp_lacks_rigor_detected
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_demographic_assumption_age_detected
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_coding_bootcamp_variant
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_developer_vs_programmer_distinction
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_multiple_bias_indicators
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_negative_educational_claim
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_rich_poor_assumption
+FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_assumption_vs_observation
+========================= 9 failed, 23 passed in 0.18s =========================
+```
+
+**PLAN.md link:** [to fill in later this week]
+
+**Walkthrough video (recommended):** [optional — to fill in if recorded]
+
+**Blockers or open questions:**
+[to fill in]
