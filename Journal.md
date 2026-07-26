@@ -22,7 +22,7 @@ In the safety section folder of the project the file **bias_detector.py** uses r
 
 ## Week 8 — Reproduction & solution planning
 
-**Reproduction commit link:** [to fill in after committing this note]
+**Reproduction commit link:** https://github.com/brtran97/pathreview/commit/87268077bbfacb5fff7ff842d056fe1203c3c753
 
 **Reproduction summary:**
 I reproduced the issue by running the bias detector unit tests in my local
