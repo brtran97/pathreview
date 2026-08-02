@@ -1,6 +1,7 @@
 """Bias detection in generated feedback."""
 
 import re
+
 import structlog
 
 logger = structlog.get_logger()
@@ -9,12 +10,18 @@ logger = structlog.get_logger()
 class BiasDetector:
     """Detect biased language in feedback."""
 
-    # Genuinely dismissive phrases about educational background
+    # Genuinely dismissive phrases about educational background.
+    # An education keyword (bootcamp / self-taught / online course) followed within a
+    # bounded window by a negative predicate. This matches natural phrasings ("bootcamp
+    # graduates can't write production code", "bootcamp education lacks fundamentals")
+    # without requiring an exact word sequence, while positive/neutral mentions ("your
+    # bootcamp background shows strong fundamentals") carry no negative predicate and so
+    # stay unflagged.
     DISMISSIVE_PATTERNS = [
-        r"(?:bootcamp|self-taught|online\s+course)\s+(?:education|training)\s+is\s+(?:insufficient|inadequate|lacks)",
-        r"(?:bootcamp|self-taught)\s+(?:graduates?|developers?)\s+(?:lack|missing)\s+(?:rigor|fundamentals|proper\s+training)",
-        r"(?:bootcamp|coding\s+bootcamp)\s+(?:doesn't|does\s+not)\s+prepare\s+(?:you|developers?)",
-        r"(?:self-taught|bootcamp)\s+is\s+(?:not|never)\s+(?:equal|comparable)\s+to\s+(?:university|traditional|formal)",
+        r"(?:(?:coding\s+)?bootcamp|self-?taught|online\s+course)\b.{0,40}?\b"
+        r"(?:can'?t|cannot|won'?t|will\s+not|lacks?|insufficient|inadequate"
+        r"|not\s+(?:equal|comparable)|never\s+(?:equal|comparable)"
+        r"|(?:isn'?t|aren'?t)\s+(?:equal|comparable))",
     ]
 
     # Demographic assumptions (about age, background, identity)
