@@ -24,11 +24,14 @@ class BiasDetector:
         r"|(?:isn'?t|aren'?t)\s+(?:equal|comparable))",
     ]
 
-    # Demographic assumptions (about age, background, identity)
+    # Demographic assumptions (about age, background, identity). Subjects allow both
+    # singular and plural forms, and the background pattern accepts subjects beyond
+    # "person from" (e.g. "developers from poor backgrounds"). The origin pattern uses a
+    # bounded window rather than an unbounded ".*" to avoid catastrophic backtracking.
     DEMOGRAPHIC_PATTERNS = [
-        r"(?:young|old|aged)\s+(?:person|developer|programmer)\s+(?:can't|cannot|won't|will\s+not)",
-        r"(?:person\s+from|coming\s+from)\s+(?:poor|rich|working[\s-]?class)",
-        r"(?:immigrant|international|foreign)\s+developers?.*(?:can't|cannot|won't|struggle)",
+        r"(?:young|old|aged)\s+(?:persons?|developers?|programmers?|engineers?)\s+(?:can'?t|cannot|won'?t|will\s+not)",
+        r"(?:persons?|people|developers?|programmers?|engineers?|candidates?|those)\s+(?:from|coming\s+from)\s+(?:poor|rich|working[\s-]?class)",
+        r"(?:immigrant|international|foreign)\s+developers?.{0,30}?(?:can'?t|cannot|won'?t|struggle)",
     ]
 
     @staticmethod
