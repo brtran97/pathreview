@@ -81,6 +81,65 @@ None.
 
 **PR link:** https://github.com/ascherj/pathreview/pull/615
 
+**PR Body (if it cannot be pulled from link):**
+```
+## Summary
+The bias detector's regex patterns required near-exact phrase sequences, so natural
+rephrasings of the same bias slipped through. For example,
+`BiasDetector.detect_bias("The candidate only attended a bootcamp, so this project
+lacks the rigor of a formal CS education")` returned `(False, '')`. This PR broadens
+the patterns in `safety/bias_detector.py` so common phrasings of educational-background
+dismissiveness and demographic assumptions are correctly flagged, while positive and
+neutral mentions stay unflagged. The `detect_bias()` signature and return shape are
+unchanged — only detection coverage improves.
+
+## Issue
+Closes #151
+
+## Changes
+- Rewrote `DISMISSIVE_PATTERNS` as an education-keyword (`bootcamp` / `coding bootcamp`
+  / `self-taught` / `online course`) followed within a bounded window by a negative
+  predicate (`can't`, `cannot`, `lacks`, `insufficient`, `inadequate`,
+  `not/never equal|comparable`). This removes the previous hard dependency on the exact
+  word "is" and on singular-only subjects.
+- Broadened `DEMOGRAPHIC_PATTERNS`: age assumptions now accept plural subjects
+  ("young developers can't…"), and the socioeconomic-background pattern accepts subjects
+  beyond "person from" ("developers from poor backgrounds…").
+- Replaced an unbounded `.*` in the origin-based demographic pattern with a bounded
+  window to avoid catastrophic backtracking.
+
+## Testing
+- [x] Unit tests pass (`make test-unit`) — see note below
+- [ ] Integration tests pass (`make test-integration`)
+- [x] Linter passes (`make lint`) — on the changed file
+- [x] Type checker passes (`make typecheck`) — on the changed file
+- [ ] New/updated tests cover the changes (see Notes)
+
+**How to verify manually:**
+1. `python -m pytest tests/unit/test_bias_detector.py -v` — 32/32 pass (was 9 failed /
+   23 passed before this change; the 9 fixed tests include
+   `test_dismissive_bootcamp_language_detected`, `test_demographic_assumption_age_detected`,
+   `test_rich_poor_assumption`, `test_assumption_vs_observation`).
+2. Spot-check in a REPL:
+   - `BiasDetector.detect_bias("bootcamp graduates can't write production code")` → `(True, …)`
+   - `BiasDetector.detect_bias("young developers can't handle complex systems")` → `(True, "Demographic assumptions detected")`
+   - `BiasDetector.detect_bias("your bootcamp background shows strong fundamentals")` → `(False, "")` (positive mention, correctly not flagged)
+
+## Notes for Reviewers
+- **No new tests added** — this PR makes the 9 pre-existing failing tests in
+  `tests/unit/test_bias_detector.py` pass; that file already specifies the intended
+  coverage, including precision guardrails for positive/neutral phrasings.
+- **Pre-existing failures:** the repo has unrelated failing tests in other modules
+  (`test_review_service`, `test_skill_extractor`, etc.). This change introduces none —
+  the full unit suite went from 53 → 44 failures (my 9 fixes), and no failure is in
+  `test_bias_detector.py`.
+- **Approach:** kept the existing regex-based design to satisfy the specified tests. A
+  more semantic/NLP approach could generalize further but would be a larger change and
+  is out of scope here.
+```
+----------
+<br>
+
 **Branch:** `fix/151-bias-detector-narrow-patterns`
 
 **What you built:**
