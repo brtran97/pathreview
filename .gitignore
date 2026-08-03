@@ -44,6 +44,3 @@ htmlcov/
 
 # Build artifacts
 *.pyc
-docs/project.md
-docs/rubric_w8.md
-docs/rubric_w9.md
