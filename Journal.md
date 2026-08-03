@@ -51,3 +51,57 @@ FAILED tests/unit/test_bias_detector.py::TestBiasDetector::test_assumption_vs_ob
 **PLAN.md link:** https://github.com/brtran97/pathreview/commit/2b00be758a03d6e6a935ee9016aeaa33734eeb6f
 
 **Blockers or open questions:**
+None — the failing tests clearly specify the intended behavior, so the path forward is well defined.
+
+## Week 9 — Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**
+Implemented the fix from PLAN.md in two iterative commits on
+`safety/bias_detector.py`. (1) Broadened `DISMISSIVE_PATTERNS` into an
+education-keyword + nearby-negative-predicate structure so natural phrasings
+("bootcamp graduates can't write production code", "bootcamp education lacks
+fundamentals") match without requiring an exact word sequence — this fixed 7 of the
+9 failing tests. (2) Broadened `DEMOGRAPHIC_PATTERNS` to accept plural subjects and
+subject anchors beyond "person from" (e.g. "developers from poor backgrounds"),
+fixing the remaining 2. All 32 bias-detector tests now pass.
+
+**Next steps:**
+Run the full self-review (`make check` / `make test-unit`), open a draft PR into
+upstream `ascherj/pathreview`, request peer feedback in Slack, then mark ready for
+review and submit.
+
+**Blockers:**
+None.
+
+---
+
+### Check-in 2 (end of week)
+
+**PR link:** https://github.com/ascherj/pathreview/pull/615
+
+**Branch:** `fix/151-bias-detector-narrow-patterns`
+
+**What you built:**
+Broadened the regex patterns in `safety/bias_detector.py` so `BiasDetector.detect_bias()`
+recognizes common natural phrasings of educational-background dismissiveness and
+demographic assumptions — not just near-exact phrase sequences. The `detect_bias()`
+signature and return shape (`tuple[bool, str]`) are unchanged; only detection coverage
+improved, and positive/neutral mentions of the same topics stay unflagged.
+
+**Tests added or updated:**
+No new tests written — the fix targets the 9 pre-existing failing tests in
+`tests/unit/test_bias_detector.py`, which now pass (suite is 32/32). Those tests cover:
+dismissive educational-background phrasings (bootcamp/self-taught/online-course +
+"can't"/"lacks"/"inadequate"/"not equal"), demographic assumptions (age, socioeconomic
+background, immigrant/international/foreign developers), and precision guardrails that
+positive/neutral mentions (e.g. "your bootcamp background shows strong fundamentals")
+remain unflagged.
+
+**Self-review confirmation:** [x] make check passes  [x] make test-unit passes
+(Note: the repo has pre-existing, unrelated failures in other modules. Verified my
+change introduces none: full unit suite went from 53 failed → 44 failed (my 9 fixes),
+and `safety/bias_detector.py` passes ruff, black, and mypy cleanly.)
+
+**Draft PR feedback received from:** None
