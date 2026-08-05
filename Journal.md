@@ -164,3 +164,37 @@ change introduces none: full unit suite went from 53 failed → 44 failed (my 9 
 and `safety/bias_detector.py` passes ruff, black, and mypy cleanly.)
 
 **Draft PR feedback received from:** None
+
+
+## Week 10 — Iteration & reflection
+
+### Reviewer feedback
+
+**Feedback received:** [ ] Yes  [X] No code review will not be performed for this summer session
+
+**Summary of feedback:**
+No feedback was performed for this session as noted by the course information, but I am preparing myself for how I can respond or address any feed for my PR to make sure that it is accepted and merged into the main project.
+
+**How you responded:**
+N/A
+
+---
+
+### Reflection
+
+**What was harder than you expected?**
+I was suprised by seeing such a large codebase when I first looked at it. It was intimidating at first to see how many parts there was and all the different issues that where available to work on. This was my first time working on a github issue workflow so it also took me some time to get acquainted with the process and the onboarding to find and issue comment on it and perform the fix and make a PR it.
+
+**What did you learn about working in a large codebase?**
+[What's different about contributing to someone else's production code
+vs. building your own project?]
+I learned that it was less important to follow and understand the entire codebase and what every moving part does because it can get overwhelming very quickly. I had to identify where my issue lived and what can be defined as fixing the issue. It was also different to learn about how to follow their documentation like going through their architecture doc to understand the overview of the project and its modules. Then each open source repo should have a contributing.md that details how they want contributions to be done and to follow their format not just write my code freely as I would on my own personal projects.
+
+**How did AI tools help — and where did they fall short?**
+AI was most useful to me for exploring the codebase and getting myself orientated when I didn't know where to start. It was also very helpful and suggesting how to fix the issue and what can be done. Where it falls short is defining success and making my own decisions about how to approach the issue and defining the scope of my fix or feature.
+
+**What would you do differently if you started over?**
+If I was able to start over I think that I did a good job on this fix I might consider working on a 2nd issue to see what other type of issues exist. My issue was code related but I also saw documentation issues, testing issues, and the tier 2 & 3 problems which are larger and pertain more to the architecture of the codebase where the bug can flow from 1 module to another one.
+
+**What are you most proud of from this module?**
+I am proud to have done my first "open-source" contribution. It was my first time working with a large existing codebase like this and using github issues. I know there is still much to learn and my git skills are still a work in progress, but I enjoyed having my first experience working in this format.
